@@ -3,20 +3,24 @@ import { Contacts } from "./components/Contacts";
 import ContactsForm from "./components/ContactsForm";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Col, Container, Row } from "react-bootstrap";
+import { v4 as uuid } from "uuid";
 
 function App() {
   const [contacts, setContacts] = useState([
     {
+      id: uuid(),
       name: "Kabutey",
       phone: 234485944,
       location: "Tudu",
     },
     {
+      id: uuid(),
       name: "Akwesi",
       phone: 234485945,
       location: "Mim",
     },
     {
+      id: uuid(),
       name: "Aku Shika",
       phone: 234485946,
       location: "Agege",
@@ -28,6 +32,14 @@ function App() {
 
   };
 
+  const handleDeleteContacts = (contactId) => {
+    setContacts(contacts.filter((contact) => contact.id !== contactId));
+  };
+
+  const handleEditContact = (id, updatedUser) => {
+    setContacts(contacts.map((user) => user.id === id ? updatedUser : user))
+  }
+
   return (
     <>
       <Container>
@@ -36,7 +48,7 @@ function App() {
             <ContactsForm contactDetail={handleAddContacts} />
           </Col>
           <Col>
-            <Contacts contactsjsx={contacts} />
+            <Contacts contactsjsx={contacts} deleteContact={handleDeleteContacts} editContacts={handleEditContact}/>
           </Col>
         </Row>
       </Container>

@@ -1,11 +1,43 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
-import React from "react";
-import { Button, Card, Col, Container, Row } from "react-bootstrap";
+import React, { useState } from "react";
+import { Button, Card, Col, Container, Modal, Row } from "react-bootstrap";
+import EditContactsForm from "./EditContactForm";
 
 export const Contacts = (props) => {
+  const [lgShow, setLgShow] = useState(false);
+  const [editPrefilledContact, setEditPrefilledContact] = useState(null);
+
+  const handleClose = ()=>{
+    setLgShow(false);
+    setEditPrefilledContact(null)
+  }
+
+  const handleShow = (contact) => {
+    setEditPrefilledContact(contact);
+    setLgShow(true);
+  }
+
+  const handleDelete = (contactId) => {
+    props.deleteContact(contactId);
+  };
+
   return (
     <>
+      <Modal
+        size="lg"
+        show={lgShow}
+        onHide={handleClose}
+      >
+        <Modal.Header closeButton>
+            <Modal.Title>
+              Edit Contact Details
+            </Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <EditContactsForm prefilledContact={editPrefilledContact} editContact={props.editContacts} closeModal={handleClose}/>
+        </Modal.Body>
+      </Modal>
       <Container>
         <Row>
           <h1 className="text-center">Contact Information</h1>
@@ -21,8 +53,19 @@ export const Contacts = (props) => {
                     </div>
                     <hr />
                   </Card.Text>
-                  <Button variant="primary" className="me-4">Edit</Button>
-                  <Button variant="danger">Delete</Button>
+                  <Button
+                    variant="primary"
+                    className="me-4"
+                    onClick={() => handleShow(contact)}
+                  >
+                    Edit
+                  </Button>
+                  <Button
+                    variant="danger"
+                    onClick={() => handleDelete(contact.id)}
+                  >
+                    Delete
+                  </Button>
                 </Card.Body>
               </Card>
             </Col>

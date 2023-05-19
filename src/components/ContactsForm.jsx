@@ -2,6 +2,7 @@
 /* eslint-disable no-unused-vars */
 import React, { Component } from "react";
 import { Button, Form } from "react-bootstrap";
+import { v4 as uuid } from "uuid";
 
 export class ContactsForm extends Component {
     constructor (props) {
@@ -14,7 +15,8 @@ export class ContactsForm extends Component {
         this.handleChange = (e) => {
             e.preventDefault()
             this.setState({
-                [e.target.name]: e.target.value
+              id: uuid(),
+              [e.target.name]: e.target.value
             })
         }
         this.handleSubmit = (e) => {
